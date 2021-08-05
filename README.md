@@ -4,16 +4,24 @@ An agent-based AI program for the fulfillment of CSCI 111 requirements under sir
 # User Manual
 
 ## How to Install the Game
-Download the source code ```hilaga_pathfinder.py``` and open it on Jupyter Notebook or any Python interface.
+Download the source code ```hilaga_pathfinder.py``` from this repo and open it on Jupyter Notebook, VS Code, Google Colab or any Python interface.
 
-## How to Run It
+## How to Run the Game
+### Local Environment
 1. Using the command prompt, navigate to the folder the file is located then run ```python hilaga_pathfinder.py```
-2. The game will first enumerate all the locations in the game, as these would be choices for the first prompt.
-3. The first prompt **“What building are you in right now?”** will ask for input for your starting location. Type your location on the box next to the prompt.
+
+### Google Colab
+1. Run all the cells in the notebook to set up all the variables and functions of the game
+2. To start, run the last cell ```start_screen ( )```
+
+### Game Flow
+
+1. The game will first enumerate all the locations in the game, as these would be choices for the first prompt.
+2. The first prompt **“What building are you in right now?”** will ask for input for your starting location. Type your location on the box next to the prompt.
 *Note that if you choose CTC in the first prompt, the game will end as it is the set end-state*
-4. The next prompt **“How would you like to traverse to CTC? (D for DFS, B for BFS, M for Minimum)”** will allow the user to choose the traversal method.
-5. The game will then proceed to find and show the best path it has taken to reach CTC as well as tell you how many steps it took to get there. A step here is defined as movement from building to building.
-6. Once it has reached CTC, it would prompt: **“Thank you for using Hilaga! Would you like to start again? (Y/N):”** Should you wish to play again, press ```Y```, should you wish to end the program, press ```N```.
+3. The next prompt **“How would you like to traverse to CTC? (D for DFS, B for BFS, M for Minimum)”** will allow the user to choose the traversal method.
+4. The game will then proceed to find and show the best path it has taken to reach CTC as well as tell you how many steps it took to get there. A step here is defined as movement from building to building.
+5. Once it has reached CTC, it would prompt: **“Thank you for using Hilaga! Would you like to start again? (Y/N):”** Should you wish to play again, press ```Y```, should you wish to end the program, press ```N```.
 
 # Technical Documentation
 
