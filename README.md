@@ -17,7 +17,7 @@ Download the source code ```hilaga_pathfinder.py``` and open it on Jupyter Noteb
 
 # Technical Documentation
 
-* **[Stack] **The programming language used was Python, with Google Colab and Github as the team’s Version Control Systems.
+* **[Stack]** The programming language used was Python, with Google Colab and Github as the team’s Version Control Systems.
 * **[Strategies]** The program employs the use of FOR loops which nested IF and ELSE statements to determine the optimal route to get to CTC from the location given. The program has two options of traversal: Breadth-First Search and Depth First Search. Depending on what the user chooses, the program will search for the best route using that search. 
 * **[Heuristics Implemented]** We have implemented the weights of the edges corresponding to the “distance” and “stamina”; however, due to time constraints we have decided to drop the agent’s stamina limit. We have implemented at best the agent’s ability to find the best path possible that takes into account the weight of the edges i.e., the distance between one place to another. This was implemented with the use of loops and dictionaries to find the minimum weight and save it as the best path then move on from there until it reaches CTC. 
 
