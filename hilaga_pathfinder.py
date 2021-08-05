@@ -13,9 +13,9 @@ Original file is located at
 
 # Importing needed libraries
 import os
+from queue import Queue
 
 # Instantiating global variables - these are the variables that define the graph where n is the transition and x is the weight of that edge
-
 nodes = {
     "BEL": 0,
     "RMT": 1,
@@ -24,62 +24,180 @@ nodes = {
     "CTC": 4
 }
 
+#state space with thir corresponding assigned weights, CTC is not included as it is the goal state
 edges = {
     "BEL": [("RMT", 1), ("Kostka", 2), ("Faura", 3)],
-    "RMT": [("Kostka", 4), ("CTC", 5)],
+    "RMT": [("Kostka", 4), ("Faura", 11), ("CTC", 5)],
     "Kostka": [("RMT", 6), ("Faura", 7), ("CTC", 8)],
-    "Faura": [("Kostka", 9), ("CTC", 10)]
+    "Faura": [("RMT", 12), ("Kostka", 9), ("CTC", 10)]
 }
 
-# Defining functions
+"""# Main Executable"""
 
-# Function that records the states of the agent and returns the weight of the action it takes
-def traverse( start_state ):
+# Defining functions
+def bfs_traverse( start_state ):
+    print("\n\nTraversing using BFS.\n\n")
+    end = False
+    step = 0
+
+    node_queue = Queue( )
+    node_queue.put( start_state )
+
+    # Creating the queue based on selected start_state
+    for node in nodes:
+        if node not in node_queue.queue:
+            node_queue.put( node )
+
+    # Iterating over queue per node per layer
+    for node in node_queue.queue:
+        if end:
+            break
+        print( "Current node: {}".format( node ) )
+        print( "Initiate goal check for node {}".format( node ) )
+        
+        if node == "CTC":
+            print( "Goal state achieved in {} step/s!\n".format(step) )
+            break
+            
+        else: 
+            print( "Proceeding to next node.\n" )
+
+        for path in edges[ node ]:
+            print( "Current node: {}".format( path[ 0 ] ) )
+            print( "Initiate goal check for node {}".format( path[ 0 ] ) )
+            
+            step += 1
+
+            if path[ 0 ] == "CTC":
+                print( "Goal state achieved in {} step/s!\n".format( step  ) )
+                end = True
+                break
+
+            else:
+                print( "Proceeding to next node.\n" )
+        
+            if node == "CTC" or end:
+                print( "Goal state achieved in {} step/s!\n".format( step  ) )
+                break
+              
+def dfs_traverse( start_state ):
+    print( "\n\nTraversing using DFS.\n\n" )
+    end = False
+    step = 0
+
+    node_queue = Queue( )
+    node_queue.put( start_state )
+
+    # Creating the queue based on selected start_state
+    for node in nodes:
+        if node not in node_queue.queue:
+            node_queue.put( node )
+
+    # Iterating over queue per node per layer
+    for node in node_queue.queue:
+        if end:
+            break
+        print( "Current node: {}".format( node ) )
+        print( "Initiate goal check for node {}".format( node ) )
+        
+        if node == "CTC":
+            print( "Goal state achieved in {} step/s!\n".format(step) )
+            break
+            
+        else: 
+            print( "Proceeding to next node.\n" )
+
+        for path in edges[ node ]:
+            print( "Current node: {}".format( path[ 0 ] ) )
+            print( "Initiate goal check for node {}".format( path[ 0 ] ) )
+            
+            step += 1
+
+            if path[ 0 ] == "CTC":
+                print( "Goal state achieved in {} step/s!\n".format( step  ) )
+                end = True
+                break
+
+            else:
+                print( "Proceeding to next node.\n" )
+        
+            if node == "CTC" or end:
+                print( "Goal state achieved in {} step/s!\n".format( step  ) )
+                break
+    
+# OPTIONAL HEURISTIC: Function that records the states of the agent and returns the weight of the action it takes
+def minimum_heuristic( start_state ):
     min = 999
 
     for path in edges[ start_state ]:
-        
         if int( path[ 1 ] ) < min:
             min = path[ 1 ]
             best_path = path[ 0 ]
             # print("DEBUG: Best path: {}".format(best_path))
         
         if path[ 0 ] == "CTC":
-            # print("")
-            best_path = path [ 0 ]
+            best_path = path[ 0 ]
 
     return best_path
-# Start Screen - when the user starts the program
-def start_screen():
-    print("Hello, Atenean!\n")
-    print("Ateneo Map: \nBEL, RMT, Kostka, Faura, CTC\n")
-    game_time()
 
-def game_time():
-    state = input("What building are you in right now? ")
-    
-    if state not in nodes.keys():
-        print("Oh no! That's not yet in the map. Please try again.")
-        game_time()
+def minimum_traverse ( state ):
+    step = 0
+
+    print("\n\nTraversing using minimum weights heuristic.\n\n")
 
     while ( state != "CTC" ):
-        state = traverse( state )
-        print("\nBest Path: {}".format( state ))
-        # print(state)
-        #This isn't working yet because the output of the function is the edge weight and not the updated state
-    print( "You have arrived at CTC. Yay!\n\n**********\n" )
+        print( "Current node: {}".format( state ) )
+        print( "Initiate goal check for node {}".format( state ) )
+
+        step += 1
+
+        state = minimum_heuristic( state )
+
+        print( "Proceeding to next node.\n" )
+
+    print( "Current node: {}".format( state ) )
+    print( "Initiate goal check for node {}".format( state ) )
+    print( "You have arrived at CTC in {} step/s!".format( step ) )
+
+# Start Screen - when the user starts the program
+def start_screen():
+    print("\n\nHello, Atenean!\n")
+    print("Ateneo Map: \nBEL, RMT, Kostka, Faura, CTC\n")
+
+    state = input("What building are you in right now? ")
+
+    if state not in nodes.keys():
+        print("Oh no! That's not yet in the map. Please try again.")
+        start_screen( )
+
+    traverse_method = input( "\n\nHow would you like to traverse to CTC? (D for DFS, B for BFS, M for Minimum) " )
+
+    if traverse_method == "B" or traverse_method == "b":
+        bfs_traverse( state )
+
+    elif traverse_method == "D" or traverse_method == "d":
+        dfs_traverse ( state )
+    
+    elif traverse_method == "M" or traverse_method == "m":
+        minimum_traverse( state )
+
+    else: 
+        print( "\nThat's not a valid way to traverse yet. Try again?" )
+        start_screen( )
 
     restart_check = "Y"
     while restart_check == "Y":
-        restart_check = str(input ("Thank you for using Hilaga! Would you like to start again? (Y/N): "))
+        restart_check = str(input ("\n\nThank you for using Hilaga! Would you like to start again? (Y/N): "))
 
         if restart_check == "Y" or restart_check == "y":
             os.system('cls' if os.name == 'nt' else 'clear')    
-            start_screen()
+            start_screen( )
+
         elif restart_check == "N" or  restart_check == "n":
-            print("See you again soon!")
-            break
+            print("\nSee you again soon!")
+            
         else:
             print("I didn't quite get that. Come again?")
 
-start_screen()
+start_screen( )
+
